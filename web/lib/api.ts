@@ -60,3 +60,48 @@ export async function fetchAudit() {
   if (!res.ok) throw new Error("Failed to fetch audit events");
   return res.json();
 }
+
+export async function uploadResume(file: File) {
+  const formData = new FormData();
+  formData.append("file", file);
+  const res = await fetch(`${BASE_URL}/api/profile/upload`, {
+    method: "POST",
+    body: formData,
+  });
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}));
+    throw new Error(errorData.detail || "Failed to upload CV");
+  }
+  return res.json();
+}
+
+export async function sendApplication(appId: string, recipientOverride?: string) {
+  const url = new URL(`${BASE_URL}/api/applications/${appId}/send`);
+  if (recipientOverride) {
+    url.searchParams.append("recipient_override", recipientOverride);
+  }
+  const res = await fetch(url.toString(), {
+    method: "POST",
+  });
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}));
+    throw new Error(errorData.detail || "Failed to dispatch email");
+  }
+  return res.json();
+}
+
+export async function fetchSettings() {
+  const res = await fetch(`${BASE_URL}/api/settings`, { cache: "no-store" });
+  if (!res.ok) throw new Error("Failed to fetch settings");
+  return res.json();
+}
+
+export async function updateSettings(payload: any) {
+  const res = await fetch(`${BASE_URL}/api/settings`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) throw new Error("Failed to update settings");
+  return res.json();
+}

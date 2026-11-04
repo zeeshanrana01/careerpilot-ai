@@ -24,6 +24,16 @@ class Settings(BaseSettings):
     cloud_model: str = "gemini-2.5-flash"
     cloud_base_url: str = "https://generativelanguage.googleapis.com/v1beta"
     
+    # SMTP & Outbound Application Dispatch settings
+    smtp_host: str = "smtp.gmail.com"
+    smtp_port: int = 587
+    smtp_user: str = ""
+    smtp_password: str = ""
+    smtp_from_email: str = ""
+    sandbox_email_mode: bool = True
+    auto_apply_enabled: bool = False
+    auto_apply_threshold: float = 85.0
+    
     # Tracking params to strip from URLs
     tracking_params: list[str] = [
         "utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content",

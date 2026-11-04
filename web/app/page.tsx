@@ -5,31 +5,36 @@ import { Navbar } from "@/components/Navbar";
 import { OpportunityCard } from "@/components/OpportunityCard";
 import { ApplicationModal } from "@/components/ApplicationModal";
 import { IngestModal } from "@/components/IngestModal";
-import { fetchMatches, fetchProfile, fetchAudit, draftApplication, fetchApplication } from "@/lib/api";
-import { Shield, Sparkles, RefreshCw, Briefcase, FileCheck } from "lucide-react";
+import { UploadCvModal } from "@/components/UploadCvModal";
+import { fetchMatches, fetchProfile, fetchAudit, fetchSettings, updateSettings, draftApplication, fetchApplication } from "@/lib/api";
+import { Shield, Sparkles, RefreshCw, Briefcase, FileCheck, Upload } from "lucide-react";
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState("matches");
   const [matches, setMatches] = useState<any[]>([]);
   const [profile, setProfile] = useState<any>(null);
   const [auditLogs, setAuditLogs] = useState<any[]>([]);
+  const [autoApplyEnabled, setAutoApplyEnabled] = useState(false);
   const [loading, setLoading] = useState(true);
 
   const [selectedAppPackage, setSelectedAppPackage] = useState<any>(null);
   const [showIngestModal, setShowIngestModal] = useState(false);
+  const [showUploadCvModal, setShowUploadCvModal] = useState(false);
   const [draftingJobId, setDraftingJobId] = useState<string | null>(null);
 
   const loadData = async () => {
     setLoading(true);
     try {
-      const [m, p, a] = await Promise.all([
+      const [m, p, a, s] = await Promise.all([
         fetchMatches(),
         fetchProfile(),
         fetchAudit(),
+        fetchSettings().catch(() => ({ auto_apply_enabled: false })),
       ]);
       setMatches(m);
       setProfile(p);
       setAuditLogs(a);
+      setAutoApplyEnabled(s?.auto_apply_enabled ?? false);
     } catch (err) {
       console.error("Error loading dashboard data:", err);
     } finally {
@@ -41,10 +46,19 @@ export default function Home() {
     loadData();
   }, []);
 
+  const handleToggleAutoApply = async () => {
+    try {
+      const nextState = !autoApplyEnabled;
+      const res = await updateSettings({ auto_apply_enabled: nextState });
+      setAutoApplyEnabled(res.auto_apply_enabled);
+    } catch (err: any) {
+      alert("Failed to toggle Auto-Pilot: " + err.message);
+    }
+  };
+
   const handleOpenDraft = async (jobId: string) => {
     setDraftingJobId(jobId);
     try {
-      // Check if already drafted, else draft
       let pkg = await fetchApplication(jobId);
       if (!pkg) {
         pkg = await draftApplication(jobId);
@@ -65,6 +79,9 @@ export default function Home() {
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         onOpenIngest={() => setShowIngestModal(true)}
+        onOpenUploadCv={() => setShowUploadCvModal(true)}
+        autoApplyEnabled={autoApplyEnabled}
+        onToggleAutoApply={handleToggleAutoApply}
       />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full space-y-8">
@@ -81,12 +98,17 @@ export default function Home() {
                 <span className="text-xs text-gray-300">
                   {profile ? `${profile.full_name} (${profile.headline})` : "Candidate Profile Active"}
                 </span>
+                {autoApplyEnabled && (
+                  <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-purple-950 text-purple-400 border border-purple-800">
+                    Auto-Pilot Active (≥85%)
+                  </span>
+                )}
               </div>
               <h1 className="text-2xl font-bold text-white tracking-tight">
                 AI Career Agent Dashboard
               </h1>
               <p className="text-xs text-gray-400 mt-1 max-w-2xl">
-                Automated preparation and strict human approval gate for job applications.
+                Automated preparation, truthful claim verification, and instant 1-click application dispatch.
               </p>
             </div>
 
@@ -148,15 +170,24 @@ export default function Home() {
         {/* TAB 2: Verified Profile */}
         {activeTab === "profile" && profile && (
           <div className="bg-[#111827]/70 backdrop-blur-md rounded-2xl p-6 border border-gray-800 space-y-6">
-            <div className="border-b border-gray-800 pb-4">
-              <h2 className="text-xl font-bold text-white">{profile.full_name}</h2>
-              <p className="text-sm text-blue-400 font-medium">{profile.headline}</p>
-              <p className="text-xs text-gray-400 mt-2">{profile.summary}</p>
+            <div className="border-b border-gray-800 pb-4 flex items-center justify-between">
+              <div>
+                <h2 className="text-xl font-bold text-white">{profile.full_name}</h2>
+                <p className="text-sm text-blue-400 font-medium">{profile.headline}</p>
+                <p className="text-xs text-gray-400 mt-2 max-w-3xl">{profile.summary}</p>
+              </div>
+              <button
+                onClick={() => setShowUploadCvModal(true)}
+                className="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-blue-600 hover:bg-blue-500 text-white flex items-center gap-1.5 shadow"
+              >
+                <Upload className="w-3.5 h-3.5" />
+                Update CV
+              </button>
             </div>
 
             <div>
               <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">
-                Verified Technical Skills
+                Verified Technical Skills ({profile.skills.length})
               </h3>
               <div className="flex flex-wrap gap-2">
                 {profile.skills.map((s: any, idx: number) => (
@@ -186,6 +217,29 @@ export default function Home() {
                         <li key={j}>{h}</li>
                       ))}
                     </ul>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">
+                Verified Projects
+              </h3>
+              <div className="space-y-3">
+                {profile.projects.map((proj: any, idx: number) => (
+                  <div key={idx} className="p-3.5 rounded-xl bg-gray-900/60 border border-gray-800">
+                    <div className="flex justify-between items-baseline">
+                      <span className="text-xs font-bold text-blue-400">{proj.name} ({proj.role})</span>
+                    </div>
+                    <p className="text-xs text-gray-300 mt-1">{proj.description}</p>
+                    <div className="mt-2 flex flex-wrap gap-1">
+                      {proj.technologies?.map((t: string, j: number) => (
+                        <span key={j} className="text-[10px] px-2 py-0.5 rounded bg-gray-800 text-gray-300 font-mono">
+                          {t}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                 ))}
               </div>
@@ -225,6 +279,8 @@ export default function Home() {
                           ? "text-red-400"
                           : log.action.includes("INGEST")
                           ? "text-blue-400"
+                          : log.action.includes("SUBMIT")
+                          ? "text-purple-400"
                           : "text-emerald-400"
                       }`}>
                         {log.action}
@@ -264,6 +320,14 @@ export default function Home() {
       {showIngestModal && (
         <IngestModal
           onClose={() => setShowIngestModal(false)}
+          onSuccess={loadData}
+        />
+      )}
+
+      {showUploadCvModal && (
+        <UploadCvModal
+          isOpen={showUploadCvModal}
+          onClose={() => setShowUploadCvModal(false)}
           onSuccess={loadData}
         />
       )}

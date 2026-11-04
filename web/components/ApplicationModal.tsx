@@ -1,6 +1,8 @@
+"use client";
+
 import React, { useState } from "react";
-import { X, CheckCircle, AlertCircle, Hash, Send, ThumbsDown } from "lucide-react";
-import { approveApplication, rejectApplication } from "@/lib/api";
+import { X, CheckCircle, AlertCircle, Hash, Send, ThumbsDown, Mail, Loader2, Sparkles } from "lucide-react";
+import { approveApplication, rejectApplication, sendApplication } from "@/lib/api";
 
 interface ApplicationModalProps {
   packageData: any;
@@ -14,7 +16,10 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({
   onRefresh,
 }) => {
   const [activeSubTab, setActiveSubTab] = useState<"cv" | "email">("cv");
-  const [actionStatus, setActionStatus] = useState<string | null>(null);
+  const [actionStatus, setActionStatus] = useState<string | null>(packageData.status);
+  const [isSending, setIsSending] = useState(false);
+  const [sendResult, setSendResult] = useState<any>(null);
+  const [recipientOverride, setRecipientOverride] = useState("");
 
   const cv = packageData.cv_variant;
   const email = packageData.cover_email;
@@ -27,6 +32,20 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({
       onRefresh();
     } catch (err: any) {
       alert("Error approving: " + err.message);
+    }
+  };
+
+  const handleSend = async () => {
+    setIsSending(true);
+    try {
+      const res = await sendApplication(packageData.id, recipientOverride || undefined);
+      setSendResult(res);
+      setActionStatus("SUBMITTED");
+      onRefresh();
+    } catch (err: any) {
+      alert("Error dispatching email: " + err.message);
+    } finally {
+      setIsSending(false);
     }
   };
 
@@ -49,7 +68,9 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({
             <div className="flex items-center gap-2">
               <h2 className="text-lg font-bold text-white">Tailored Application Package</h2>
               <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full ${
-                actionStatus === "APPROVED" || packageData.status === "APPROVED"
+                actionStatus === "SUBMITTED"
+                  ? "bg-purple-950 text-purple-400 border border-purple-800"
+                  : actionStatus === "APPROVED"
                   ? "bg-emerald-950 text-emerald-400 border border-emerald-800"
                   : "bg-blue-950 text-blue-400 border border-blue-800"
               }`}>
@@ -94,6 +115,18 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({
 
         {/* Content Body */}
         <div className="p-6 overflow-y-auto space-y-5 flex-1 text-xs">
+          {sendResult && (
+            <div className="p-3.5 rounded-xl bg-purple-950/60 border border-purple-800 text-purple-200 flex items-center gap-2.5">
+              <Sparkles className="w-4 h-4 text-purple-400 shrink-0" />
+              <div>
+                <p className="font-semibold text-white">Application Dispatched Successfully!</p>
+                <p className="text-[11px] text-purple-300">
+                  Recipient: <span className="font-mono text-white">{sendResult.recipient}</span> ({sendResult.status})
+                </p>
+              </div>
+            </div>
+          )}
+
           {activeSubTab === "cv" ? (
             <div className="space-y-4">
               <div>
@@ -168,6 +201,23 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({
                   <p className="whitespace-pre-line text-gray-400 pt-2">{email.sign_off}</p>
                 </div>
               </div>
+
+              {/* Recruiter Email Input */}
+              <div className="p-3 rounded-xl bg-gray-900/40 border border-gray-800 flex items-center gap-3">
+                <Mail className="w-4 h-4 text-gray-400 shrink-0" />
+                <div className="flex-1">
+                  <label className="text-[10px] uppercase font-bold text-gray-400 block mb-0.5">
+                    Destination Email (Optional Override)
+                  </label>
+                  <input
+                    type="email"
+                    placeholder="recruiter@company.com (leave blank for default careers@company.com)"
+                    value={recipientOverride}
+                    onChange={(e) => setRecipientOverride(e.target.value)}
+                    className="w-full bg-gray-950 border border-gray-700 rounded-lg px-2.5 py-1 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-blue-500"
+                  />
+                </div>
+              </div>
             </div>
           )}
 
@@ -197,7 +247,7 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({
         {/* Footer Actions */}
         <div className="p-4 border-t border-gray-800 bg-gray-900/40 flex items-center justify-between">
           <div className="text-[11px] text-gray-400">
-            Approval binds strictly to payload hash <code>{packageData.draft_hash.slice(0, 12)}...</code>
+            Cryptographic Payload: <code>{packageData.draft_hash.slice(0, 12)}...</code>
           </div>
           <div className="flex items-center space-x-2">
             <button
@@ -209,10 +259,18 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({
             </button>
             <button
               onClick={handleApprove}
-              className="px-4 py-1.5 rounded-lg text-xs font-semibold text-white bg-emerald-600 hover:bg-emerald-500 shadow flex items-center gap-1.5"
+              className="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-emerald-300 hover:text-white bg-emerald-950 hover:bg-emerald-900 border border-emerald-800/80 shadow flex items-center gap-1.5"
             >
-              <Send className="w-3.5 h-3.5" />
-              Approve for Submission
+              <CheckCircle className="w-3.5 h-3.5" />
+              Approve Only
+            </button>
+            <button
+              onClick={handleSend}
+              disabled={isSending}
+              className="px-4 py-1.5 rounded-lg text-xs font-semibold text-white bg-blue-600 hover:bg-blue-500 shadow flex items-center gap-1.5 disabled:opacity-50"
+            >
+              {isSending ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Send className="w-3.5 h-3.5" />}
+              {actionStatus === "SUBMITTED" ? "Re-Send Application" : "Approve & Send Email"}
             </button>
           </div>
         </div>

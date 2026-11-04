@@ -1,4 +1,4 @@
-﻿# CareerPilot AI
+# CareerPilot AI
 
 <div align="center">
 
@@ -8,7 +8,7 @@
 </p>
 
 [![Python 3.11+](https://img.shields.io/badge/Python-3.11%2B-blue.svg)](https://www.python.org/)
-[![Tests Passing](https://img.shields.io/badge/Tests-27%20Passed%20(100%25)-brightgreen.svg)]()
+[![Tests Passing](https://img.shields.io/badge/Tests-40%20Passed%20(100%25)-brightgreen.svg)]()
 [![Security Shield](https://img.shields.io/badge/Security-Zero--Trust%20Untrusted%20Input-orange.svg)]()
 [![Inference Engine](https://img.shields.io/badge/AI%20Inference-Local%20Ollama%20%2B%20Cloud-purple.svg)]()
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)]()
@@ -218,13 +218,40 @@ Once opened in your browser, you can:
 ## 7. Practical Roadmap
 
 - [x] **Milestone 1 — Intake Foundation**: Normalized data pipeline, deduplication, SQLite schema, verified profile, 100% test coverage.
-- [x] **Milestones 1–3 — Job Intelligence**: Hybrid Local/Cloud LLM provider interface, XML prompt isolation, explainable match scoring (0-100), preference-based ranking.
-- [ ] **Milestone 3 — Application Drafting**: Tailored CV highlight variants and personalized cover emails referencing verified facts.
-- [ ] **Milestone 4 — Approval Engine & Email Integration**: LangGraph interrupt workflow, cryptographic draft hashes, and human-in-the-loop email review queue.
-- [ ] **Milestone 5 — Production Dashboard**: Next.js dashboard, FastAPI REST endpoints, and n8n background scheduling.
+- [x] **Milestone 2 — Job Intelligence & Grounded Matching**: Hybrid Local/Cloud LLM provider interface, XML prompt isolation, explainable match scoring (0-100), preference-based ranking.
+- [x] **Milestone 3 — Application Drafting & Claim Verification**: Tailored CV highlight variants, personalized cover emails, cryptographic draft hashing (SHA-256), and automated zero-hallucination claim verifier.
+- [x] **Milestone 4 — Approval Engine & Email Dispatcher**: Approval state machine, RFC-compliant MIME email generator, SMTP & Sandbox dispatcher, and Threshold-Based Autonomous Auto-Apply mode.
+- [x] **Milestone 5 — Modern Web Dashboard & CV Ingestion**: Next.js 14 App Router dashboard, Tailwind CSS, Lucide icons, live FastAPI backend, and drag-and-drop PDF/JSON CV parser.
+- [ ] **Milestone 6 — Continuous Feeds & Scheduling**: n8n workflow integration and automated polling workers for remote job feeds.
 
 ---
 
-## 8. License
+## 8. Automated Application & CV Upload Guide
+
+### How to Upload Your CV
+1. **Via Next.js Dashboard**:
+   - Click the **"Upload CV"** button in the top navigation bar.
+   - Drag & drop your resume file (`.pdf` or `.json`).
+   - The system extracts contact details, skills, experience, and projects, updates your verified profile, and automatically re-evaluates all active job opportunities against your new profile.
+2. **Via REST API**:
+   ```bash
+   curl -X POST "http://localhost:8000/api/profile/upload" \
+        -F "file=@my_resume.pdf"
+   ```
+
+### How to Apply to Companies Automatically
+CareerPilot provides two operational modes for company applications:
+
+1. **Human-in-the-Loop 1-Click Apply (Recommended)**:
+   - Click **"Draft Application"** on any ranked opportunity.
+   - The AI generates a customized CV variant and personalized cover email, grounded strictly in your verified facts.
+   - Review the draft in the modal and click **"Approve & Send Email"**. The backend dispatches the application via SMTP/Sandbox and records the event in the audit trail.
+2. **Autonomous Auto-Pilot Mode (Threshold-Based)**:
+   - Toggle **"Auto-Pilot: ON"** in the top navigation bar (or configure `CAREERPILOT_AUTO_APPLY_ENABLED=true` in `.env`).
+   - When new jobs are ingested that score at or above the threshold (>= 85%), CareerPilot automatically drafts the application, runs the zero-hallucination verifier, and dispatches the email to the hiring team without waiting for manual approval.
+
+---
+
+## 9. License
 
 Distributed under the **Apache 2.0 License**. Built by [Rana Zeeshan](https://github.com/zeeshanrana01).
