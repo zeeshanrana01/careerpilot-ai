@@ -113,7 +113,7 @@ careerpilot-ai/
 │   └── sample_career_profile.json# Rana's verified AI engineer career profile
 ├── scripts/
 │   ├── run_intake_demo.py        # Milestone 1 Intake Foundation CLI runner
-│   └── run_matching_demo.py      # Milestone 2 Job Intelligence & Match Engine CLI runner
+│   └── run_matching_demo.py      # Milestones 1–3 Job Intelligence & Match Engine CLI runner
 ├── tests/
 │   ├── conftest.py               # In-memory SQLite fixtures & mock providers
 │   ├── test_normalizer.py        # Unit tests for title, company, salary normalization
@@ -218,7 +218,7 @@ Once opened in your browser, you can:
 ## 7. Practical Roadmap
 
 - [x] **Milestone 1 — Intake Foundation**: Normalized data pipeline, deduplication, SQLite schema, verified profile, 100% test coverage.
-- [x] **Milestone 2 — Job Intelligence**: Hybrid Local/Cloud LLM provider interface, XML prompt isolation, explainable match scoring (0-100), preference-based ranking.
+- [x] **Milestones 1–3 — Job Intelligence**: Hybrid Local/Cloud LLM provider interface, XML prompt isolation, explainable match scoring (0-100), preference-based ranking.
 - [ ] **Milestone 3 — Application Drafting**: Tailored CV highlight variants and personalized cover emails referencing verified facts.
 - [ ] **Milestone 4 — Approval Engine & Email Integration**: LangGraph interrupt workflow, cryptographic draft hashes, and human-in-the-loop email review queue.
 - [ ] **Milestone 5 — Production Dashboard**: Next.js dashboard, FastAPI REST endpoints, and n8n background scheduling.

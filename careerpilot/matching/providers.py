@@ -35,7 +35,7 @@ class LocalOllamaProvider(LLMProvider):
             "stream": False,
             "format": "json",
             "options": {
-                "temperature": 0.1,  # Low temperature for deterministic evaluation
+                "temperature": 0.1,
             },
         }
         async with httpx.AsyncClient(timeout=60.0) as client:
@@ -63,7 +63,6 @@ class CloudLLMProvider(LLMProvider):
         self.base_url = (base_url or settings.cloud_base_url).rstrip("/")
 
     async def generate_json(self, prompt: str, system_prompt: str) -> dict:
-        # Standard Gemini REST API generateContent endpoint with response_mime_type="application/json"
         url = f"{self.base_url}/models/{self.model}:generateContent?key={self.api_key}"
         payload = {
             "system_instruction": {
@@ -93,20 +92,57 @@ class CloudLLMProvider(LLMProvider):
 class MockLLMProvider(LLMProvider):
     """
     Deterministic mock provider for unit testing, CI/CD, and offline verification.
-    Computes keyword-grounded evaluations without making network calls.
     """
 
     async def generate_json(self, prompt: str, system_prompt: str) -> dict:
         prompt_lower = prompt.lower()
-        
-        # Test security injection resilience: if untrusted job contains override command, ignore it!
-        # Do not grant 100 points simply because the job requested it!
-        
-        # Extract skills present in profile
+        sys_lower = system_prompt.lower()
+
+        # Handle Drafting Mode
+        if "cv_variant" in sys_lower or "application author" in sys_lower:
+            return {
+                "cv_variant": {
+                    "tailored_headline": "Senior AI Systems Engineer | Distributed Agent Orchestration",
+                    "tailored_summary": "Senior AI Engineer with 5+ years of verified production experience architecting agentic workflows with LangGraph, building high-throughput FastAPI inference microservices, and deploying open-source models with vLLM.",
+                    "highlighted_skills": ["Python", "LangGraph", "FastAPI", "PyTorch", "Docker", "RAG Systems"],
+                    "highlighted_experience": [
+                        {
+                            "title": "Senior AI Systems Engineer",
+                            "company": "Nexus AI Labs",
+                            "highlights": [
+                                "Architected multi-agent LLM workflow reducing response latency by 45%.",
+                                "Built enterprise RAG pipeline indexing over 2M documents with hybrid retrieval.",
+                                "Deployed fine-tuned models using vLLM on Kubernetes, reducing cloud API costs by 60%."
+                            ]
+                        }
+                    ],
+                    "highlighted_projects": [
+                        {
+                            "name": "CareerPilot AI",
+                            "role": "Creator & Lead Architect",
+                            "highlights": ["Designed zero-trust untrusted input isolation and deterministic deduplication."],
+                            "technologies": ["Python", "FastAPI", "LangGraph", "SQLite"]
+                        }
+                    ]
+                },
+                "cover_email": {
+                    "subject": "Application: Senior AI Engineer - Rana Zeeshan",
+                    "salutation": "Dear Hiring Team,",
+                    "body_paragraphs": [
+                        "I am writing to express my enthusiastic interest in the Senior AI Engineer role. With extensive experience in agent orchestration, model serving, and distributed systems, I am excited about the opportunity to contribute immediately to your engineering roadmap.",
+                        "At Nexus AI Labs, I architected production multi-agent workflows using LangGraph and FastAPI that cut latency by 45%, while reducing cloud inference spend by 60% using vLLM. My focus has consistently been on building reliable, privacy-first AI systems grounded in verified data.",
+                        "I would welcome the opportunity to connect and discuss how my hands-on background in agentic pipelines and scalable retrieval can accelerate your product goals."
+                    ],
+                    "call_to_action": "I look forward to discussing the role at your convenience.",
+                    "sign_off": "Best regards,\nRana Zeeshan"
+                }
+            }
+
+        # Handle Matching Mode
         skills_matched = []
         gaps = []
-        score = 65.0  # Base score
-        
+        score = 65.0
+
         keywords = {
             "python": ("Python", "Expert proficiency with 6+ years in Python production systems"),
             "fastapi": ("FastAPI", "4+ years building high-throughput microservices and APIs"),
@@ -116,7 +152,7 @@ class MockLLMProvider(LLMProvider):
             "docker": ("Docker & K8s", "Deployed LLM inference on Kubernetes clusters"),
             "distributed": ("Distributed Systems", "Experience in distributed inference scaling"),
         }
-        
+
         for k, (name, evidence) in keywords.items():
             if k in prompt_lower:
                 skills_matched.append({
@@ -125,8 +161,7 @@ class MockLLMProvider(LLMProvider):
                     "confidence": "high"
                 })
                 score += 5.0
-                
-        # Gaps
+
         if "rust" in prompt_lower:
             gaps.append("Production Rust programming experience not found on verified profile.")
             score -= 10.0
@@ -136,10 +171,10 @@ class MockLLMProvider(LLMProvider):
         if "phd" in prompt_lower:
             gaps.append("PhD in Computer Science or related field required.")
             score -= 15.0
-            
+
         score = max(20.0, min(95.0, score))
         recommendation = "APPLY" if score >= 75.0 else ("CONSIDER" if score >= 50.0 else "SKIP")
-        
+
         return {
             "overall_score": score,
             "recommendation": recommendation,

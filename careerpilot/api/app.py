@@ -7,13 +7,15 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse
 
-from careerpilot.domain.models import RawJobListing, CareerProfile, IngestStatus
+from careerpilot.domain.models import RawJobListing, CareerProfile, IngestStatus, AuditEvent
 from careerpilot.storage.database import init_db, get_connection
 from careerpilot.storage.repository import JobRepository
 from careerpilot.intake.pipeline import JobIntakePipeline
 from careerpilot.matching.matcher import JobMatcher
 from careerpilot.matching.providers import MockLLMProvider
 from careerpilot.matching.ranker import JobRanker
+from careerpilot.drafting.drafter import ApplicationDrafter
+from careerpilot.drafting.models import ApplicationPackage, ApplicationStatus, CVVariant, CoverEmail, GroundingReport
 from careerpilot.api.dashboard_html import DASHBOARD_HTML
 
 PROJECT_ROOT = Path(__file__).parent.parent.parent
@@ -22,12 +24,10 @@ DB_PATH = "careerpilot.db"
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Startup: Ensure tables exist and default data is seeded
     init_db(DB_PATH)
     conn = get_connection(DB_PATH)
     repo = JobRepository(conn)
     
-    # Check if profile exists, if not seed it
     profile = repo.get_career_profile()
     if not profile:
         profile_path = PROJECT_ROOT / "data" / "sample_career_profile.json"
@@ -37,7 +37,6 @@ async def lifespan(app: FastAPI):
             profile = CareerProfile.model_validate(data)
             repo.save_career_profile(profile)
 
-    # Check if jobs exist, if not seed sample jobs
     existing_jobs = repo.list_jobs(limit=1)
     if not existing_jobs:
         jobs_path = PROJECT_ROOT / "data" / "sample_jobs.json"
@@ -48,7 +47,6 @@ async def lifespan(app: FastAPI):
             pipeline = JobIntakePipeline(repo)
             results = pipeline.process_batch(raw_jobs)
             
-            # Match accepted jobs automatically for initial dashboard display
             matcher = JobMatcher(MockLLMProvider(), repo)
             for res in results:
                 if res.status == IngestStatus.ACCEPTED and res.job and profile:
@@ -59,8 +57,8 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(
     title="CareerPilot AI API",
-    description="Production-grade AI Career Agent API with Untrusted Input Defense & Explainable Matching",
-    version="0.2.0",
+    description="Production-grade AI Career Agent API with Untrusted Input Defense, Matching & Drafting",
+    version="0.3.0",
     lifespan=lifespan,
 )
 
@@ -75,7 +73,6 @@ app.add_middleware(
 
 @app.get("/", response_class=HTMLResponse)
 async def serve_dashboard():
-    """Serve the interactive CareerPilot AI Web Dashboard."""
     return HTMLResponse(content=DASHBOARD_HTML)
 
 
@@ -120,7 +117,6 @@ async def ingest_job(raw: RawJobListing):
     pipeline = JobIntakePipeline(repo)
     result = pipeline.process_job(raw)
     
-    # If accepted, trigger match evaluation immediately
     if result.status == IngestStatus.ACCEPTED and result.job:
         profile = repo.get_career_profile()
         if profile:
@@ -129,6 +125,103 @@ async def ingest_job(raw: RawJobListing):
             
     conn.close()
     return result
+
+
+@app.post("/api/applications/draft/{job_id}")
+async def create_application_draft(job_id: str):
+    """Generate tailored CV variant and cover email package grounded in verified facts."""
+    conn = get_connection(DB_PATH)
+    repo = JobRepository(conn)
+    job = repo.get_job_by_id(job_id)
+    if not job:
+        conn.close()
+        raise HTTPException(status_code=404, detail=f"Job with ID {job_id} not found")
+        
+    profile = repo.get_career_profile()
+    if not profile:
+        conn.close()
+        raise HTTPException(status_code=400, detail="Verified career profile missing")
+
+    drafter = ApplicationDrafter(MockLLMProvider(), repo)
+    package = await drafter.draft_application(job, profile)
+    conn.close()
+    return package
+
+
+@app.get("/api/applications/{job_id}")
+async def get_application_by_job(job_id: str):
+    """Retrieve existing application package for a job."""
+    conn = get_connection(DB_PATH)
+    cursor = conn.execute("SELECT * FROM applications WHERE job_id = ?", (job_id,))
+    row = cursor.fetchone()
+    if not row:
+        conn.close()
+        raise HTTPException(status_code=404, detail="No application draft exists for this job")
+        
+    cv = CVVariant.model_validate_json(row["cv_version"])
+    email = CoverEmail.model_validate_json(row["email_draft"])
+    
+    # Check approval request
+    req_cur = conn.execute("SELECT payload_hash FROM approval_requests WHERE application_id = ?", (row["id"],))
+    req_row = req_cur.fetchone()
+    draft_hash = req_row["payload_hash"] if req_row else ""
+    
+    package = ApplicationPackage(
+        id=row["id"],
+        job_id=row["job_id"],
+        cv_variant=cv,
+        cover_email=email,
+        draft_hash=draft_hash,
+        status=ApplicationStatus(row["status"]),
+    )
+    conn.close()
+    return package
+
+
+@app.post("/api/applications/{app_id}/approve")
+async def approve_application(app_id: str):
+    """Human-in-the-loop approval: marks application APPROVED and logs audit trail."""
+    conn = get_connection(DB_PATH)
+    with conn:
+        conn.execute("UPDATE applications SET status = 'APPROVED' WHERE id = ?", (app_id,))
+        conn.execute("UPDATE approval_requests SET approval_status = 'APPROVED' WHERE id = ?", (app_id,))
+        
+    repo = JobRepository(conn)
+    repo.record_audit_event(
+        AuditEvent(
+            entity_type="application",
+            entity_id=app_id,
+            action="APPLICATION_APPROVED",
+            actor="human_reviewer",
+            outcome="SUCCESS",
+            details={"application_id": app_id},
+        )
+    )
+    conn.close()
+    return {"status": "APPROVED", "message": "Application approved by human reviewer."}
+
+
+@app.post("/api/applications/{app_id}/reject")
+async def reject_application(app_id: str):
+    """Human-in-the-loop rejection."""
+    conn = get_connection(DB_PATH)
+    with conn:
+        conn.execute("UPDATE applications SET status = 'REJECTED' WHERE id = ?", (app_id,))
+        conn.execute("UPDATE approval_requests SET approval_status = 'REJECTED' WHERE id = ?", (app_id,))
+        
+    repo = JobRepository(conn)
+    repo.record_audit_event(
+        AuditEvent(
+            entity_type="application",
+            entity_id=app_id,
+            action="APPLICATION_REJECTED",
+            actor="human_reviewer",
+            outcome="FAILURE",
+            details={"application_id": app_id},
+        )
+    )
+    conn.close()
+    return {"status": "REJECTED", "message": "Application marked as rejected."}
 
 
 @app.get("/api/audit")
