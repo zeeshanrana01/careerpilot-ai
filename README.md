@@ -166,7 +166,23 @@ All **27 tests** pass in ~1 second with zero external API calls:
 .\.venv\Scripts\python.exe scripts/run_intake_demo.py
 ```
 
-### 4. Run the Job Intelligence & Explainable Matching Demo
+### 4. Launch the Interactive Web Dashboard & REST API
+
+To launch the full interactive web dashboard in your browser:
+
+\\ash
+.\.venv\Scripts\python.exe scripts/run_web.py
+\
+- **Web Dashboard**: [http://localhost:8000](http://localhost:8000)
+- **Interactive Swagger / OpenAPI Docs**: [http://localhost:8000/docs](http://localhost:8000/docs)
+
+Once opened in your browser, you can:
+- Inspect ranked opportunities with match scores and evidence citations.
+- View Rana's verified profile facts, skills, and preferences.
+- Click **'Ingest Raw Job'** to test the real-time security shield with any job posting.
+- Review the live append-only audit trail.
+
+### 5. Run the CLI Matching Demo
 
 ```bash
 .\.venv\Scripts\python.exe scripts/run_matching_demo.py
