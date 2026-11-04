@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 620" width="100%" height="100%">
+  <defs>
+    <linearGradient id="termBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0d1117"/>
+      <stop offset="100%" stop-color="#161b22"/>
+    </linearGradient>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#000000" flood-opacity="0.6"/>
+    </filter>
+  </defs>
+
+  <rect width="960" height="620" fill="#030712"/>
+
+  <!-- Terminal Window -->
+  <g filter="url(#shadow)">
+    <rect x="30" y="30" width="900" height="560" rx="10" fill="url(#termBg)" stroke="#30363d" stroke-width="1"/>
+    
+    <!-- Titlebar -->
+    <path d="M 30 30 L 930 30 A 10 10 0 0 1 930 72 L 30 72 Z" fill="#161b22"/>
+    <circle cx="55" cy="51" r="6" fill="#ff5f56"/>
+    <circle cx="75" cy="51" r="6" fill="#ffbd2e"/>
+    <circle cx="95" cy="51" r="6" fill="#27c93f"/>
+    <text x="480" y="56" font-family="-apple-system, BlinkMacSystemFont, monospace" font-size="13" fill="#8b949e" text-anchor="middle">rana@ai-workstation: ~/careerpilot-ai (main)</text>
+  </g>
+
+  <!-- Terminal Content -->
+  <g font-family="'Fira Code', 'Cascadia Code', Consolas, monospace" font-size="12" xml:space="preserve">
+    <!-- Command 1: Pytest -->
+    <text x="50" y="105" fill="#58a6ff">$ python -m pytest -v</text>
+    <text x="50" y="125" fill="#8b949e">============================= test session starts =============================</text>
+    <text x="50" y="145" fill="#8b949e">platform win32 -- Python 3.14.8, pytest-9.2.0 -- rootdir: careerpilot-ai</text>
+    
+    <text x="50" y="170" fill="#c9d1d9">tests/test_deduplicator.py::test_dedup_key_matches_across_legal_suffixes</text>
+    <text x="800" y="170" fill="#3fb950" font-weight="700">PASSED [  7%]</text>
+
+    <text x="50" y="190" fill="#c9d1d9">tests/test_intake_pipeline.py::test_process_job_clean_ingestion</text>
+    <text x="800" y="190" fill="#3fb950" font-weight="700">PASSED [ 18%]</text>
+
+    <text x="50" y="210" fill="#c9d1d9">tests/test_intake_pipeline.py::test_process_job_security_sanitization</text>
+    <text x="800" y="210" fill="#3fb950" font-weight="700">PASSED [ 29%]</text>
+
+    <text x="50" y="230" fill="#c9d1d9">tests/test_matching.py::test_job_matcher_evaluates_and_persists_match</text>
+    <text x="800" y="230" fill="#3fb950" font-weight="700">PASSED [ 40%]</text>
+
+    <text x="50" y="250" fill="#c9d1d9">tests/test_matching.py::test_prompt_injection_defense_in_evaluation</text>
+    <text x="800" y="250" fill="#3fb950" font-weight="700">PASSED [ 44%]</text>
+
+    <text x="50" y="270" fill="#c9d1d9">tests/test_validator.py::test_validator_rejects_expired_job</text>
+    <text x="800" y="270" fill="#3fb950" font-weight="700">PASSED [ 96%]</text>
+
+    <text x="50" y="295" fill="#3fb950" font-weight="700">======================= 27 passed in 1.10s (100%) ========================</text>
+
+    <!-- Command 2: Demo -->
+    <text x="50" y="335" fill="#58a6ff">$ python scripts/run_matching_demo.py</text>
+    <text x="50" y="358" fill="#bc8cff">  CareerPilot AI: Job Intake &amp; Explainable CV Matching Engine</text>
+    <text x="50" y="378" fill="#8b949e">  Candidate: Rana Zeeshan | Senior AI Engineer | LLM Systems &amp; Agent Orchestration</text>
+    
+    <text x="50" y="405" fill="#79c0ff">-----------------------------------------------------------------------------</text>
+    <text x="50" y="425" fill="#f0883e" font-weight="700">  RANK #1: Senior AI Engineer @ Anthropic</text>
+    <text x="50" y="445" fill="#e6edf3">  Match Score: <tspan fill="#3fb950" font-weight="700">90.0 / 100</tspan> | Recommendation: <tspan fill="#238636" font-weight="700">[APPLY]</tspan> | Remote: YES | Salary: $185k - $240k</text>
+    <text x="50" y="465" fill="#8b949e">  Evidence Citations:</text>
+    <text x="70" y="485" fill="#3fb950">    * Python -> Expert proficiency with 6+ years in Python production systems</text>
+    <text x="70" y="505" fill="#3fb950">    * LangGraph -> Architected multi-agent LLM systems with LangGraph</text>
+    <text x="70" y="525" fill="#3fb950">    * FastAPI -> 4+ years building high-throughput microservices and APIs</text>
+    <text x="50" y="545" fill="#f85149">  Gaps Identified: None in core architecture (No production Rust required)</text>
+    <text x="50" y="565" fill="#7ee787">  [Audit Trail: 9 tamper-evident records appended to SQLite audit_events table]</text>
+  </g>
+</svg>

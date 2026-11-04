@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b0f19"/>
+      <stop offset="100%" stop-color="#111827"/>
+    </linearGradient>
+    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1f2937"/>
+      <stop offset="100%" stop-color="#111827"/>
+    </linearGradient>
+    <linearGradient id="blueGlow" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#60a5fa"/>
+    </linearGradient>
+    <linearGradient id="purpleGlow" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#8b5cf6"/>
+      <stop offset="100%" stop-color="#a78bfa"/>
+    </linearGradient>
+    <linearGradient id="greenGlow" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#34d399"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="960" height="540" fill="url(#bg)"/>
+  
+  <!-- Header -->
+  <text x="480" y="45" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="24" font-weight="700" fill="#f9fafb" text-anchor="middle">CareerPilot AI — Hybrid Architecture &amp; Security Boundary</text>
+  <text x="480" y="70" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14" fill="#9ca3af" text-anchor="middle">Modular Monolith with Untrusted Input Isolation &amp; Zero-Trust AI Matching</text>
+
+  <!-- Left: Ingestion & Security -->
+  <rect x="40" y="100" width="260" height="390" rx="12" fill="url(#cardGrad)" stroke="#374151" stroke-width="1.5"/>
+  <rect x="40" y="100" width="260" height="42" rx="12" fill="#1e293b"/>
+  <text x="60" y="127" font-family="sans-serif" font-size="15" font-weight="600" fill="#60a5fa">1. Intake &amp; Security Shield</text>
+  
+  <rect x="56" y="160" width="228" height="56" rx="8" fill="#0f172a" stroke="#ef4444" stroke-width="1"/>
+  <text x="70" y="184" font-family="sans-serif" font-size="13" font-weight="600" fill="#f87171">Untrusted Raw Sources</text>
+  <text x="70" y="202" font-family="sans-serif" font-size="11" fill="#94a3b8">Feeds, APIs, Scraped HTML</text>
+
+  <rect x="56" y="235" width="228" height="60" rx="8" fill="#0f172a" stroke="#3b82f6" stroke-width="1"/>
+  <text x="70" y="259" font-family="sans-serif" font-size="13" font-weight="600" fill="#93c5fd">HTML &amp; Injection Defense</text>
+  <text x="70" y="278" font-family="sans-serif" font-size="11" fill="#94a3b8">Script stripping &amp; regex audit</text>
+
+  <rect x="56" y="315" width="228" height="60" rx="8" fill="#0f172a" stroke="#10b981" stroke-width="1"/>
+  <text x="70" y="339" font-family="sans-serif" font-size="13" font-weight="600" fill="#6ee7b7">Deduplication Engine</text>
+  <text x="70" y="358" font-family="sans-serif" font-size="11" fill="#94a3b8">Deterministic SHA-256 fingerprint</text>
+
+  <rect x="56" y="395" width="228" height="60" rx="8" fill="#0f172a" stroke="#f59e0b" stroke-width="1"/>
+  <text x="70" y="419" font-family="sans-serif" font-size="13" font-weight="600" fill="#fcd34d">Pydantic Schema Validation</text>
+  <text x="70" y="438" font-family="sans-serif" font-size="11" fill="#94a3b8">Salary, deadlines, completeness</text>
+
+  <!-- Middle: Hybrid AI Engine -->
+  <rect x="350" y="100" width="260" height="390" rx="12" fill="url(#cardGrad)" stroke="#374151" stroke-width="1.5"/>
+  <rect x="350" y="100" width="260" height="42" rx="12" fill="#1e293b"/>
+  <text x="370" y="127" font-family="sans-serif" font-size="15" font-weight="600" fill="#a78bfa">2. Hybrid AI Match Engine</text>
+
+  <rect x="366" y="160" width="228" height="64" rx="8" fill="#0f172a" stroke="#8b5cf6" stroke-width="1"/>
+  <text x="380" y="184" font-family="sans-serif" font-size="13" font-weight="600" fill="#c4b5fd">Verified Profile Evidence</text>
+  <text x="380" y="202" font-family="sans-serif" font-size="11" fill="#94a3b8">No hallucinated qualifications</text>
+  <text x="380" y="216" font-family="sans-serif" font-size="10" fill="#a78bfa">Strict factual grounding check</text>
+
+  <rect x="366" y="244" width="228" height="64" rx="8" fill="#0f172a" stroke="#6366f1" stroke-width="1"/>
+  <text x="380" y="268" font-family="sans-serif" font-size="13" font-weight="600" fill="#a5b4fc">Local Ollama Engine</text>
+  <text x="380" y="286" font-family="sans-serif" font-size="11" fill="#94a3b8">Private document processing</text>
+  <text x="380" y="300" font-family="sans-serif" font-size="10" fill="#818cf8">Zero external data transmission</text>
+
+  <rect x="366" y="328" width="228" height="64" rx="8" fill="#0f172a" stroke="#ec4899" stroke-width="1"/>
+  <text x="380" y="352" font-family="sans-serif" font-size="13" font-weight="600" fill="#f472b6">Cloud LLM Engine</text>
+  <text x="380" y="370" font-family="sans-serif" font-size="11" fill="#94a3b8">Complex reasoning &amp; drafting</text>
+  <text x="380" y="384" font-family="sans-serif" font-size="10" fill="#f472b6">Gemini / Claude / GPT API</text>
+
+  <rect x="366" y="412" width="228" height="60" rx="8" fill="#0f172a" stroke="#10b981" stroke-width="1"/>
+  <text x="380" y="434" font-family="sans-serif" font-size="13" font-weight="600" fill="#34d399">Explainable Score &amp; Gaps</text>
+  <text x="380" y="452" font-family="sans-serif" font-size="11" fill="#94a3b8">0-100 score + requirement citations</text>
+
+  <!-- Right: Storage & Human-in-the-Loop -->
+  <rect x="660" y="100" width="260" height="390" rx="12" fill="url(#cardGrad)" stroke="#374151" stroke-width="1.5"/>
+  <rect x="660" y="100" width="260" height="42" rx="12" fill="#1e293b"/>
+  <text x="680" y="127" font-family="sans-serif" font-size="15" font-weight="600" fill="#34d399">3. Control &amp; Storage</text>
+
+  <rect x="676" y="160" width="228" height="64" rx="8" fill="#0f172a" stroke="#0ea5e9" stroke-width="1"/>
+  <text x="690" y="184" font-family="sans-serif" font-size="13" font-weight="600" fill="#38bdf8">SQLite / PostgreSQL</text>
+  <text x="690" y="202" font-family="sans-serif" font-size="11" fill="#94a3b8">Jobs, matches, applications</text>
+  <text x="690" y="216" font-family="sans-serif" font-size="10" fill="#38bdf8">UNIQUE constraints enforced</text>
+
+  <rect x="676" y="244" width="228" height="64" rx="8" fill="#0f172a" stroke="#10b981" stroke-width="1"/>
+  <text x="690" y="268" font-family="sans-serif" font-size="13" font-weight="600" fill="#34d399">Human-in-the-Loop Gate</text>
+  <text x="690" y="286" font-family="sans-serif" font-size="11" fill="#94a3b8">Approval queue for applications</text>
+  <text x="690" y="300" font-family="sans-serif" font-size="10" fill="#34d399">Cryptographic payload hash</text>
+
+  <rect x="676" y="328" width="228" height="64" rx="8" fill="#0f172a" stroke="#eab308" stroke-width="1"/>
+  <text x="690" y="352" font-family="sans-serif" font-size="13" font-weight="600" fill="#facc15">Tamper-Evident Audit Trail</text>
+  <text x="690" y="370" font-family="sans-serif" font-size="11" fill="#94a3b8">Immutable audit_events log</text>
+  <text x="690" y="384" font-family="sans-serif" font-size="10" fill="#facc15">Every decision traced</text>
+
+  <rect x="676" y="412" width="228" height="60" rx="8" fill="#0f172a" stroke="#8b5cf6" stroke-width="1"/>
+  <text x="690" y="434" font-family="sans-serif" font-size="13" font-weight="600" fill="#c084fc">n8n Workflow Automation</text>
+  <text x="690" y="452" font-family="sans-serif" font-size="11" fill="#94a3b8">Recurring schedules &amp; alerts</text>
+
+  <!-- Connectors -->
+  <path d="M 300 295 L 350 295" stroke="#60a5fa" stroke-width="2" stroke-dasharray="4 4"/>
+  <polygon points="348,291 356,295 348,299" fill="#60a5fa"/>
+
+  <path d="M 610 295 L 660 295" stroke="#a78bfa" stroke-width="2" stroke-dasharray="4 4"/>
+  <polygon points="658,291 666,295 658,299" fill="#a78bfa"/>
+</svg>

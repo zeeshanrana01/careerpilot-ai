@@ -1,0 +1,124 @@
+{
+  "full_name": "Rana Zeeshan",
+  "email": "rana.zeeshan@example.com",
+  "phone": "+1-555-0199",
+  "location": "San Francisco, CA / Remote",
+  "headline": "Senior AI Engineer | LLM Systems & Agent Orchestration",
+  "summary": "AI Engineer with 5+ years of experience building production machine learning systems, LLM agents, and scalable retrieval architectures. Specialist in LangGraph, FastAPI, PyTorch, and local/cloud hybrid AI inference.",
+  "skills": [
+    {
+      "name": "Python",
+      "category": "technical",
+      "years_experience": 6.0,
+      "proficiency": "expert"
+    },
+    {
+      "name": "LangGraph & LangChain",
+      "category": "technical",
+      "years_experience": 2.5,
+      "proficiency": "expert"
+    },
+    {
+      "name": "FastAPI",
+      "category": "technical",
+      "years_experience": 4.0,
+      "proficiency": "expert"
+    },
+    {
+      "name": "PyTorch",
+      "category": "technical",
+      "years_experience": 4.5,
+      "proficiency": "advanced"
+    },
+    {
+      "name": "PostgreSQL & Vector DBs",
+      "category": "technical",
+      "years_experience": 4.0,
+      "proficiency": "advanced"
+    },
+    {
+      "name": "Docker & Kubernetes",
+      "category": "technical",
+      "years_experience": 3.5,
+      "proficiency": "advanced"
+    },
+    {
+      "name": "RAG Architecture",
+      "category": "technical",
+      "years_experience": 3.0,
+      "proficiency": "expert"
+    }
+  ],
+  "experience": [
+    {
+      "title": "Senior AI Systems Engineer",
+      "company": "Nexus AI Labs",
+      "start_date": "2023-01-01",
+      "end_date": "Present",
+      "location": "Remote",
+      "highlights": [
+        "Architected multi-agent LLM workflow reducing customer response latency by 45%.",
+        "Built enterprise RAG pipeline indexing over 2M documents with hybrid sparse-dense retrieval.",
+        "Deployed fine-tuned open-source models using vLLM on Kubernetes, reducing cloud API costs by 60%."
+      ],
+      "skills_used": ["Python", "LangGraph", "FastAPI", "PostgreSQL", "Docker", "vLLM"]
+    },
+    {
+      "title": "Machine Learning Engineer",
+      "company": "AlphaData Technologies",
+      "start_date": "2020-06-01",
+      "end_date": "2022-12-31",
+      "location": "San Jose, CA",
+      "highlights": [
+        "Engineered production feature extraction and inference pipelines serving 10M+ daily predictions.",
+        "Created automated data quality and model drift monitoring dashboards."
+      ],
+      "skills_used": ["Python", "PyTorch", "SQL", "Docker", "CI/CD"]
+    }
+  ],
+  "projects": [
+    {
+      "name": "CareerPilot AI",
+      "role": "Creator & Lead Architect",
+      "description": "Production modular monolith for private AI job discovery, CV matching, and controlled application drafting.",
+      "technologies": ["Python", "FastAPI", "LangGraph", "SQLite", "Pydantic"],
+      "link": "https://github.com/zeeshanrana01/careerpilot-ai",
+      "highlights": [
+        "Zero-trust prompt injection defense for untrusted job listings.",
+        "Deterministic deduplication and explainable match scoring."
+      ]
+    },
+    {
+      "name": "SecureDocs Agent",
+      "role": "Architect",
+      "description": "Self-hosted privacy-first document question-answering tool using local Ollama inference.",
+      "technologies": ["Ollama", "ChromaDB", "Python", "FastAPI"],
+      "link": "https://github.com/rana/securedocs-agent",
+      "highlights": ["100% offline document analysis with zero external data transmission."]
+    }
+  ],
+  "certifications": [
+    {
+      "name": "DeepLearning.AI Generative AI with Large Language Models",
+      "issuer": "DeepLearning.AI / Coursera",
+      "issue_date": "2023-08-15",
+      "credential_id": "DL-GENAI-88349",
+      "url": "https://coursera.org/verify/DL-GENAI-88349"
+    },
+    {
+      "name": "AWS Certified Machine Learning - Specialty",
+      "issuer": "Amazon Web Services",
+      "issue_date": "2022-11-10",
+      "credential_id": "AWS-MLS-49120",
+      "url": "https://aws.amazon.com/verification"
+    }
+  ],
+  "preferences": {
+    "target_roles": ["AI Engineer", "Senior AI Engineer", "Staff AI Engineer", "LLM Systems Engineer"],
+    "preferred_locations": ["Remote", "San Francisco, CA", "New York, NY"],
+    "remote_only": false,
+    "min_acceptable_salary": 140000.0,
+    "preferred_technologies": ["Python", "LangGraph", "FastAPI", "PyTorch", "vLLM"],
+    "excluded_industries": ["Gambling", "Predatory Lending"]
+  }
+}

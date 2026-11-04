@@ -1,0 +1,64 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 520" width="100%" height="100%">
+  <defs>
+    <linearGradient id="cardBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#111827"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+    <filter id="cardShadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000000" flood-opacity="0.5"/>
+    </filter>
+  </defs>
+
+  <rect width="960" height="520" fill="#090d16"/>
+
+  <g filter="url(#cardShadow)">
+    <rect x="40" y="30" width="880" height="460" rx="16" fill="url(#cardBg)" stroke="#1e293b" stroke-width="2"/>
+  </g>
+
+  <rect x="40" y="30" width="880" height="90" rx="16" fill="#1e293b" opacity="0.6"/>
+  <circle cx="85" cy="75" r="24" fill="#3b82f6" opacity="0.2"/>
+  <text x="85" y="82" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="20" font-weight="700" fill="#60a5fa" text-anchor="middle">A</text>
+
+  <text x="125" y="65" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="18" font-weight="700" fill="#f8fafc">Senior AI Engineer</text>
+  <text x="125" y="88" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="13" fill="#94a3b8">Anthropic · San Francisco, CA (Remote) · Posted 3d ago · $185,000 - $240,000 / yr</text>
+
+  <rect x="760" y="50" width="130" height="48" rx="8" fill="#064e3b" stroke="#059669" stroke-width="1.5"/>
+  <text x="825" y="73" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="13" font-weight="700" fill="#34d399" text-anchor="middle">90% MATCH</text>
+  <text x="825" y="90" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="10" font-weight="600" fill="#6ee7b7" text-anchor="middle">RECOMMENDED: APPLY</text>
+
+  <rect x="65" y="140" width="830" height="60" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+  <text x="80" y="162" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="12" font-weight="600" fill="#93c5fd">AI AGENT EVALUATION REASONING</text>
+  <text x="80" y="184" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="12" fill="#cbd5e1">Exceptional alignment with Python, FastAPI, and agentic LLM orchestration. Candidate's verified experience leading RAG and distributed model pipelines matches 7 of 7 core responsibilities.</text>
+
+  <rect x="65" y="215" width="400" height="185" rx="8" fill="#0f172a" stroke="#1e293b" stroke-width="1"/>
+  <text x="80" y="240" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="13" font-weight="700" fill="#10b981">Verified Evidence Citations (Strengths)</text>
+  
+  <text x="80" y="268" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="12" fill="#34d399">✓ Python &amp; Distributed Systems</text>
+  <text x="96" y="286" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="11" fill="#94a3b8">6+ yrs verified experience; reduced LLM serving costs 60%</text>
+
+  <text x="80" y="312" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="12" fill="#34d399">✓ LangGraph &amp; Agent Frameworks</text>
+  <text x="96" y="330" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="11" fill="#94a3b8">Architected multi-agent workflows; latency reduced 45%</text>
+
+  <text x="80" y="356" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="12" fill="#34d399">✓ FastAPI &amp; Microservices</text>
+  <text x="96" y="374" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="11" fill="#94a3b8">4 yrs building high-concurrency async APIs</text>
+
+  <rect x="495" y="215" width="400" height="185" rx="8" fill="#0f172a" stroke="#1e293b" stroke-width="1"/>
+  <text x="510" y="240" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="13" font-weight="700" fill="#f59e0b">Gaps &amp; Missing Requirements</text>
+
+  <text x="510" y="268" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="12" fill="#f87171">! Rust Low-Level Systems</text>
+  <text x="526" y="286" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="11" fill="#94a3b8">Posting mentions Rust; not found in verified career profile</text>
+
+  <text x="510" y="320" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="13" font-weight="700" fill="#818cf8">Security &amp; Grounding Guarantee</text>
+  <text x="510" y="342" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="11" fill="#cbd5e1">✓ Grounding Verified: Zero fabricated qualifications.</text>
+  <text x="510" y="360" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="11" fill="#cbd5e1">✓ Injection Defense: Zero unauthorized prompt overrides.</text>
+  <text x="510" y="378" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="11" fill="#cbd5e1">✓ Audit Fingerprint: 739c64a8... (Tamper-evident SQLite log)</text>
+
+  <rect x="65" y="420" width="220" height="44" rx="8" fill="#2563eb"/>
+  <text x="175" y="447" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="13" font-weight="600" fill="#ffffff" text-anchor="middle">Generate Tailored Application</text>
+
+  <rect x="305" y="420" width="160" height="44" rx="8" fill="#1e293b" stroke="#475569" stroke-width="1"/>
+  <text x="385" y="447" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="13" font-weight="500" fill="#e2e8f0" text-anchor="middle">View Verified CV Diff</text>
+
+  <rect x="485" y="420" width="120" height="44" rx="8" fill="#1e293b" stroke="#dc2626" stroke-width="1"/>
+  <text x="545" y="447" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="13" font-weight="500" fill="#f87171" text-anchor="middle">Skip Opportunity</text>
+</svg>
